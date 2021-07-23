@@ -159,6 +159,13 @@ function _draw()
   dh=0
  end
 
+ if bk>75 then
+  local q=bk-74
+  if (q>100) q=200
+  for i=0,q do
+   pset(flr(rnd(64))+64,flr(rnd(128)),flr(rnd(16)))
+  end
+ end    
  -- save screen to erase sprites on next pass
  memcpy(0x1000,0x6000+y*64,512)
  memcpy(0x1800,0x6200,512)
@@ -214,13 +221,25 @@ function _draw()
  if (fire) print("❎beam",89,2,7) else print("❎beam",89,2,0)
 
  local s="-=] grand cloud alley [=-"
+ local c0,c1,c2,c3,c4,c5=0,8,9,10,11,12
+ if (bk>20) c1,c2,c3,c4,c5=8,4,8,4,8
+ if (bk>50) then
+  s="-=] awful duck murder [=-"
+  c0=15
+  pal(15,6,1)
+ end
+ if (bk>30) pal(12,5,1)
+ if (bk>40) then 
+  pal(7,2,1)
+  pal(6,1,1)
+ end
  for i=1,#s do
-  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.25)*3,12)
-  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.2)*3,11)
-  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.15)*3,10)
-  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.1)*3,9)
-  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.05)*3,8)
-  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63)*3,0)
+  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.25)*3,c5)
+  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.2)*3,c4)
+  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.15)*3,c3)
+  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.1)*3,c2)
+  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63+0.05)*3,c1)
+  print(sub(s,i,i),10+i*4,120+sin(i/20+(py&63)/63)*3,c0)
  end
 end
 
@@ -238,6 +257,11 @@ function splodey(x,y)
   local t=rnd(1)
   circ(x+ox+sin(t)*r,y+oy+cos(t)*r,r,6)
   circfill(x+sin(t)*r,y+cos(t)*r,r,7)
+ end
+ if bk>50 then
+  for i=0,24 do
+   line(x,y,x+cos(rnd(1))*rnd(24),y+sin(rnd(1))*rnd(24),8)
+  end
  end   
 end
 
